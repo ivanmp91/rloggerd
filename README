@@ -1,0 +1,36 @@
+rloggerd Copyright (C) 2012  Ivan Mora Perez
+This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+
+  You should have received a copy of the GNU General Public License
+  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+
+DESCRIPTION
+------------
+rloggerd is a simple script that allow send a log file to remote rsyslog server. Basically it has two ways of working, a simple mode 
+sends all the log file to the syslog server and daemon mode, with the option --daemon that will send only the new lines since rloggerd
+was invoked with this option.
+
+EXAMPLES
+------------
+
+- Send to syslog server 192.168.1.136 the file log /var/log/mysqld.log with the facility local1 and a priority info:
+
+  ./rloggerd.pl --server 192.168.1.136 --file /var/log/mysqld.log --facility local1 --priority info
+  
+- Send new lines continuously of log /var/log/mysqld.log to syslog server with facility local0 and priority warn using tcp and prepend the text "hellow world"
+  for each log line:
+
+  ./rloggerd.pl --server 192.168.1.136 --file /var/log/mysqld.log --facility local0 --priority warn --socket tcp --tag "hello world" --daemon
+
+CONTACT
+------------
+For any error with the script or suggestions to improve rloggerd, please contact me with the email: ivan@opentodo.net
