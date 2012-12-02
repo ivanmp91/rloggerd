@@ -1,4 +1,0 @@
-opentodonet
-===========
-
-public scripts
