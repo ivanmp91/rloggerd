@@ -29,7 +29,7 @@ EXAMPLES
 - Send new lines continuously of log /var/log/mysqld.log to syslog server with facility local0 and priority warn using tcp and prepend the text "hellow world"
   for each log line:
 
-  ./rloggerd.pl --server 192.168.1.136 --file /var/log/mysqld.log --facility local0 --priority warn --socket tcp --tag "hello world" --daemon
+  ./rloggerd.pl --server 192.168.1.136 --file /var/log/mysqld.log --facility local0 --priority warning --socket tcp --tag "hello world" --daemon
 
 CONTACT
 ------------
