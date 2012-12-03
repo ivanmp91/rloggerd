@@ -15,7 +15,7 @@ This program is free software: you can redistribute it and/or modify
 
 DESCRIPTION
 ------------
-rloggerd is a simple script that allow send a log file to remote rsyslog server. Basically it has two ways of working, a simple mode 
+rloggerd is a simple script that allow send a log file to remote rsyslog server, by default using port udp/514. Basically it has two ways of working, a simple mode 
 sends all the log file to the syslog server and daemon mode, with the option --daemon that will send only the new lines since rloggerd
 was invoked with this option.
 
