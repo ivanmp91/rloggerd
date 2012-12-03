@@ -92,3 +92,98 @@ sub openFile{
     sendLogging($_);
   }
   close(DATA);
+}
+#Check arguments are correctly entered
+sub checkArguments{ 
+  if(defined($params->{help})){
+    usage();
+  }
+  else{
+      if(exists($facilities{$facility}) && exists($priorities{$priority})){
+	if(defined($params->{daemon})){
+	  monitorFile();
+	}
+	else{
+	  openFile();
+	}
+      }
+      else{
+	  usage("The option entered is not valid");
+      }
+  }
+    
+}
+
+#Send the new lines continuously to the syslog server
+sub monitorFile{
+  open(DATA,"tail -0f $file |") || die "The file can't be open";
+
+  while(<DATA>){
+    sendLogging($_);
+  }
+
+  close(DATA);
+
+}
+#Send log line to the server
+sub sendLogging{
+  openlog($tag,"ndelay",$facilities{$facility});
+  setlogsock($sock,$server) or die "Connection to syslog server failed";
+  syslog($priorities{$priority},shift) or die "Connection to syslog server failed";
+  closelog();
+}
+#Menu help to use rloggerd
+sub usage{
+   print shift()."\n";
+   print <<EOF;  
+Usage: rloggerd.pl [OPTIONS] 
+Read a log file and send each line to a remote syslog server
+with a facility and priority.
+Mandatory arguments:
+	--server    : ip address of remote server
+	--facility  : facility type message to send to the server. Available options:
+		      audit
+		      auth
+		      authpriv
+		      console
+		      cron
+		      daemon
+		      ftp
+		      kern
+		      install
+		      launchd
+		      lfmt
+		      local0-7
+		      lpr
+		      mail
+		      netinfo
+		      news
+		      ntp
+		      ras
+		      remoteauth
+		      security
+		      syslog
+		      user
+		      uucp
+	--priority  : priority level to send to the server. Available options:
+		      debug
+		      info
+		      notice
+		      warning
+		      crit
+		      alert
+		      emerg
+	--file      : the log file to read
+Optional arguments:
+	--socket    : the type of socket used. Default use udp, available options:
+		      tcp
+		      udp
+		      unix
+	--tag	    : message to prepend for each message log
+	--daemon    : this option reads the log file and sends the new entries continuously to the server
+	--help      : print this menu help
+Thanks for using rloggerd. The author is Ivan Mora Perez to report any error or suggestion the e-mail contact is: ivan\@opentodo.net
+EOF
+  exit 0;
+}
+
